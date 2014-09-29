@@ -30,6 +30,7 @@ func main() {
       log.Printf("Found update '%s'", update.Name)
       if downlo.IsUpdateValid(update.Source, update.Hash) {
         log.Printf("Update '%s' valid", update.Name)
+        downlo.InstallUpdate(update)
       } else {
         log.Printf("Update '%s' is not valid", update.Name)
       }
