@@ -2,6 +2,7 @@ package downlo
 
 import (
   "log"
+  "strings"
 )
 
 func FilterUpdateCandidates(components []Project, latest map[string]map[string]Snapshot) (candidates []Candidate) {
@@ -14,10 +15,15 @@ func FilterUpdateCandidates(components []Project, latest map[string]map[string]S
       candidate.Commit = snapshot.Commit
       candidate.Target = c.Path
       candidate.Hash   = snapshot.Sha1
+      candidate.FileName = filenameForCandidate(candidate)
       candidates = append(candidates, candidate)
     }
   }
   return
+}
+
+func filenameForCandidate(candidate Candidate) string {
+  return strings.Replace(candidate.Name, "/", "-", -1) + "-" + candidate.Ref
 }
 
 func NeedsUpdate(component Project, latest map[string]map[string]Snapshot) (isCandidate bool, candidate Snapshot) {

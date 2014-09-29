@@ -2,7 +2,6 @@ package downlo
 
 import (
   "log"
-  "strings"
   "path/filepath"
   "encoding/json"
   "io/ioutil"
@@ -11,7 +10,7 @@ import (
 
 func Fetch(candidate Candidate, destinationPath string) () {
   absolutePath, _ := filepath.Abs(destinationPath)
-  filename := strings.Replace(candidate.Name, "/", "-", -1) + "-" + candidate.Ref
+  filename := candidate.FileName
   downloadPath := filepath.Join(absolutePath, "binaries", filename)
 
   manifestPath := filepath.Join(absolutePath, "manifests", filename + ".json")

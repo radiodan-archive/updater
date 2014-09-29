@@ -22,4 +22,5 @@ type Candidate struct {
     Hash   string
     Target string
     Source string
+    FileName string
 }
