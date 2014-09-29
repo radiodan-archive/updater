@@ -1,7 +1,7 @@
 package downlo
 
 import (
-  "fmt"
+  "log"
   "path/filepath"
   "io/ioutil"
   "encoding/json"
@@ -24,18 +24,18 @@ func ReadDeploy(dir string) (deploy Project) {
 
   path := filepath.Join(dir, ".deploy")
 
-  fmt.Printf("Reading: %s \n", path)
+  log.Printf("Reading: %s \n", path)
 
   contents, err := ioutil.ReadFile(path)
   if err != nil {
-    fmt.Printf("Error reading file: %s \n", path)
+    log.Printf("Error reading file: %s \n", path)
   }
 
   parseError := json.Unmarshal(contents, &deploy)
 
   if parseError != nil {
-    fmt.Printf("Error reading deploy: %s \n", path)
-    fmt.Println(parseError)
+    log.Printf("Error reading deploy: %s \n", path)
+    log.Println(parseError)
   }
 
   return

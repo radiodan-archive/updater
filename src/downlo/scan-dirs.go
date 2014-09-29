@@ -1,8 +1,7 @@
 package downlo
 
 import (
-  // "os"
-  "fmt"
+  "log"
   "path/filepath"
   "io/ioutil"
 )
@@ -13,7 +12,7 @@ func ScanDirs(path string) (dirs []string) {
 
   matches, err := ioutil.ReadDir(dirpath)
   if err != nil {
-    fmt.Printf("Error reading path")
+    log.Printf("Error reading path")
   }
 
   for _, f := range matches {

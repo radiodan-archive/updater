@@ -1,7 +1,7 @@
 package downlo
 
 import (
-  "fmt"
+  "log"
   "io/ioutil"
   "net/http"
   "encoding/json"
@@ -20,7 +20,7 @@ func Latest() (data map[string]map[string]Snapshot) {
   url := "http://deploy.radiodan.net"
   resp, err := http.Get(url)
   if err != nil {
-    fmt.Printf("HTTP Request Error")
+    log.Printf("HTTP Request Error")
   }
   defer resp.Body.Close()
   body, err := ioutil.ReadAll(resp.Body)
@@ -30,7 +30,7 @@ func Latest() (data map[string]map[string]Snapshot) {
   parseError := json.Unmarshal(body, &data)
 
   if parseError != nil {
-    fmt.Printf("JSON parse error")
+    log.Printf("JSON parse error")
   }
 
   return
