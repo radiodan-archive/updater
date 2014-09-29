@@ -7,12 +7,6 @@ import (
   "encoding/json"
 )
 
-type Project struct {
-    Name    string
-    Ref     string
-    Commit  string
-}
-
 func ReadDeploys(dirs []string) (deploys []Project) {
   for _, dir := range dirs {
     deploys = append(deploys, ReadDeploy(dir))

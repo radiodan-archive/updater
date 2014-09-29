@@ -7,13 +7,6 @@ import (
   "encoding/json"
 )
 
-type Snapshot struct {
-    File    string
-    Sha1    string
-    Commit  string
-    Updated string
-}
-
 var data map[string]map[string]Snapshot
 
 func Latest() (data map[string]map[string]Snapshot) {
