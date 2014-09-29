@@ -27,6 +27,8 @@ func ReadDeploy(dir string) (deploy Project) {
 
   parseError := json.Unmarshal(contents, &deploy)
 
+  deploy.Path = dir
+
   if parseError != nil {
     log.Printf("Error reading deploy: %s \n", path)
     log.Println(parseError)

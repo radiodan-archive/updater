@@ -8,15 +8,22 @@ import (
 
 
 func main() {
-    var target string
+    var target, workspace string
 
     debug := false
 
     flag.StringVar(&target, "target", "", "The directory to search for")
+    flag.StringVar(&workspace, "workspace", "", "Where to download updates to")
     flag.Parse()
 
     if target == "" {
       fmt.Println("Missing parameter 'target'")
+      flag.PrintDefaults()
+      return
+    }
+
+    if workspace == "" {
+      fmt.Println("Missing parameter 'workspace'")
       flag.PrintDefaults()
       return
     }
@@ -33,5 +40,12 @@ func main() {
     if debug { fmt.Println(latest) }
 
     candidates := downlo.FilterUpdateCandidates(deploys, latest)
-    if debug { fmt.Println(candidates) }
+    for _, c := range candidates {
+      downlo.Fetch(c, workspace)
+    }
+    if debug {
+      fmt.Println(candidates)
+    }
+
+    // downloads := downlo.FetchUpdates(candidates)
 }

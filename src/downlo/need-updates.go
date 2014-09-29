@@ -4,16 +4,23 @@ import (
   "log"
 )
 
-func FilterUpdateCandidates(components []Project, latest map[string]map[string]Snapshot) (candidates []Project) {
+func FilterUpdateCandidates(components []Project, latest map[string]map[string]Snapshot) (candidates []Candidate) {
   for _, c := range components {
-    if NeedsUpdate(c, latest) {
-      candidates = append(candidates, c)
+    if isCandidate, snapshot := NeedsUpdate(c, latest); isCandidate {
+      candidate := Candidate{}
+      candidate.Url    = snapshot.File
+      candidate.Name   = c.Name
+      candidate.Ref    = c.Ref
+      candidate.Commit = snapshot.Commit
+      candidate.Target = c.Path
+      candidate.Hash   = snapshot.Sha1
+      candidates = append(candidates, candidate)
     }
   }
   return
 }
 
-func NeedsUpdate(component Project, latest map[string]map[string]Snapshot) (isCandidate bool) {
+func NeedsUpdate(component Project, latest map[string]map[string]Snapshot) (isCandidate bool, candidate Snapshot) {
   log.Printf("Checking '%s#%s'...\n", component.Name, component.Ref)
 
   isCandidate = false
@@ -30,6 +37,7 @@ func NeedsUpdate(component Project, latest map[string]map[string]Snapshot) (isCa
       } else {
         log.Printf("...needs update? YES\n")
         isCandidate = true
+        candidate = ref
       }
     }
   }
