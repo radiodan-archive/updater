@@ -23,6 +23,7 @@ func Fetch(release downlo.Release, destinationPath string) () {
   downloadFile(release.Source, downloadPath)
 
   release.Source = downloadPath
+  release.Name   = filename
   writeManifest(manifestPath, release)
 
   log.Println(release)

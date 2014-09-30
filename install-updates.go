@@ -3,9 +3,8 @@ package main
 import (
   "flag"
   "log"
-  "downlo"
+  "downlo/deployed"
 )
-
 
 func main() {
     var workspace string
@@ -23,16 +22,16 @@ func main() {
 
     log.Printf("Scanning '%s' for updates to install\n", workspace)
 
-    updates := downlo.PendingUpdates(workspace)
-    if debug { log.Println(updates) }
+    pending := deployed.PendingUpdates(workspace)
+    if debug { log.Println(pending) }
 
-    for _, update := range updates {
-      log.Printf("Found update '%s'", update.Name)
-      if downlo.IsUpdateValid(update.Source, update.Hash) {
-        log.Printf("Update '%s' valid", update.Name)
-        downlo.InstallUpdate(update)
+    for _, release := range pending {
+      log.Printf("Found update '%s'", release.Project)
+      if deployed.IsValidRelease(release) {
+        log.Printf("Update '%s' valid", release.Project)
+        deployed.InstallUpdate(release, workspace)
       } else {
-        log.Printf("Update '%s' is not valid", update.Name)
+        log.Printf("Update '%s' is not valid", release.Project)
       }
     }
 }

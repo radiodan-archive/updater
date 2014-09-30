@@ -1,13 +1,14 @@
-package downlo
+package deployed
 
 import (
   "log"
   "path/filepath"
   "io/ioutil"
   "encoding/json"
+  "downlo"
 )
 
-func PendingUpdates(workspace string) (candidates []Candidate) {
+func PendingUpdates(workspace string) (candidates []downlo.Release) {
   dirs := scanDirForManifest(workspace)
 
   candidates = loadManifests(dirs)
@@ -35,7 +36,7 @@ func scanDirForManifest(path string) (manifests []string) {
   return
 }
 
-func loadManifests(paths []string) (candidates []Candidate) {
+func loadManifests(paths []string) (candidates []downlo.Release) {
   for _, p := range paths {
     candidates = append(candidates, loadManifest(p))
   }
@@ -43,7 +44,7 @@ func loadManifests(paths []string) (candidates []Candidate) {
   return
 }
 
-func loadManifest(path string) (candidate Candidate) {
+func loadManifest(path string) (candidate downlo.Release) {
   contents, err := ioutil.ReadFile(path)
 
   if err != nil {

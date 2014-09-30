@@ -1,17 +1,21 @@
-package downlo
+package deployed
 
 import (
   "log"
   "io/ioutil"
+  "path/filepath"
   "os/exec"
+  "downlo"
 )
 
-func InstallUpdate(update Candidate) (bool){
+func InstallUpdate(update downlo.Release, workspace string) (bool){
+  absolutePath, _ := filepath.Abs(workspace)
+  backupPath := filepath.Join(absolutePath, "previous", update.Name)
 
   // create temp dir
-  tempDir, err := ioutil.TempDir("", update.FileName + "-")
+  tempDir, err := ioutil.TempDir("", update.Name)
   if err != nil {
-    log.Printf("Error creating temp dir for update '%s'", update.Name)
+    log.Printf("Error creating temp dir for update '%s'", update.Project)
   }
 
   log.Printf("Temp Dir %s\n",  tempDir)
@@ -19,13 +23,13 @@ func InstallUpdate(update Candidate) (bool){
   // untar archive
   err = exec.Command("tar", "-C", tempDir, "-xzf", update.Source).Run()
   if err != nil {
-    log.Printf("Error unarchiving update '%s'\n", update.Name)
+    log.Printf("Error unarchiving update '%s'\n", update.Project)
     log.Println(err)
     return false
   }
 
   // mv old file
-  err = exec.Command("mv", update.Target, update.Target + ".previous").Run()
+  err = exec.Command("mv", update.Target, backupPath).Run()
   if err != nil {
     log.Printf("Error moving current app '%s'\n", update.Target)
     log.Println(err)
@@ -38,7 +42,7 @@ func InstallUpdate(update Candidate) (bool){
     log.Printf("Error moving updated app into place'%s'\n", update.Target)
     log.Println(err)
 
-    exec.Command("mv", update.Target + ".previous", update.Target).Run()
+    exec.Command("mv", backupPath, update.Target).Run()
 
     return false
   }

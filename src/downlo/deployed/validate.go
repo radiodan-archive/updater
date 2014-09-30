@@ -1,16 +1,19 @@
-package downlo
+package deployed
 
 import(
   "log"
   "os"
   "io"
-  // "io/ioutil"
   "crypto/sha1"
   "fmt"
+  "downlo"
 )
 
-func IsUpdateValid(path string, expectedHash string) (isValid bool) {
+func IsValidRelease(release downlo.Release) (isValid bool) {
   isValid = false
+
+  path := release.Source
+  expectedHash := release.Hash
 
   file, err := os.Open(path)
 

@@ -32,4 +32,5 @@ type Release struct {
   Target  string
   Hash    string
   Commit  string
+  Name    string
 }
