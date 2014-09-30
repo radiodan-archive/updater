@@ -29,7 +29,10 @@ func main() {
       log.Printf("Found update '%s'", release.Project)
       if deployed.IsValidRelease(release) {
         log.Printf("Update '%s' valid", release.Project)
-        deployed.InstallUpdate(release, workspace)
+        success := deployed.InstallUpdate(release, workspace)
+        if success {
+          deployed.CleanUp(release, workspace)
+        }
       } else {
         log.Printf("Update '%s' is not valid", release.Project)
       }
