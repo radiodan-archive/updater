@@ -24,3 +24,10 @@ type Candidate struct {
     Source string
     FileName string
 }
+
+type Release struct {
+  Name   string
+  Source string
+  Hash   string
+  Commit string
+}

@@ -4,6 +4,7 @@ import (
   "flag"
   "fmt"
   "downlo"
+  "downlo/updates"
 )
 
 
@@ -38,6 +39,9 @@ func main() {
 
     latest  := downlo.Latest()
     if debug { fmt.Println(latest) }
+
+    latestProjects := updates.LatestReleasesByProject()
+    if debug { fmt.Println(latestProjects) }
 
     candidates := downlo.FilterUpdateCandidates(deploys, latest)
     for _, c := range candidates {
