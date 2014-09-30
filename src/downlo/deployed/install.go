@@ -29,17 +29,17 @@ func InstallUpdate(update downlo.Release, workspace string) (bool){
   }
 
   // mv old file
-  err = exec.Command("mv", update.Target, backupPath).Run()
+  err = exec.Command("mv", "-f", update.Target, backupPath).Run()
   if err != nil {
-    log.Printf("Error moving current app '%s'\n", update.Target)
+    log.Printf("Error moving current app '%s' -> '%s'\n", update.Target, backupPath)
     log.Println(err)
     return false
   }
 
   // mv new into place
-  err = exec.Command("mv", tempDir, update.Target).Run()
+  err = exec.Command("mv", "-f", tempDir, update.Target).Run()
   if err != nil {
-    log.Printf("Error moving updated app into place'%s'\n", update.Target)
+    log.Printf("Error moving updated app into place '%s' -> '%s'\n", tempDir, update.Target)
     log.Println(err)
 
     exec.Command("mv", backupPath, update.Target).Run()
