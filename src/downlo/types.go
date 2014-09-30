@@ -26,8 +26,10 @@ type Candidate struct {
 }
 
 type Release struct {
-  Name   string
-  Source string
-  Hash   string
-  Commit string
+  Project string
+  Ref     string
+  Source  string
+  Target  string
+  Hash    string
+  Commit  string
 }

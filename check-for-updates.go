@@ -3,15 +3,15 @@ package main
 import (
   "flag"
   "fmt"
-  "downlo"
   "downlo/updates"
+  "downlo/deployed"
 )
 
 
 func main() {
     var target, workspace string
 
-    debug := false
+    debug := true
 
     flag.StringVar(&target, "target", "", "The directory to search for")
     flag.StringVar(&workspace, "workspace", "", "Where to download updates to")
@@ -31,25 +31,27 @@ func main() {
 
     fmt.Printf("Scanning %s\n", target)
 
-    dirs    := downlo.ScanDirs(target)
-    if debug { fmt.Println(dirs) }
-
-    deploys := downlo.ReadDeploys(dirs)
-    if debug { fmt.Println(deploys) }
-
-    latest  := downlo.Latest()
-    if debug { fmt.Println(latest) }
+    deployedReleases := deployed.Deployed(target)
+    if debug {
+      fmt.Println("deployedReleases")
+      fmt.Println(deployedReleases)
+    }
 
     latestProjects := updates.LatestReleasesByProject()
-    if debug { fmt.Println(latestProjects) }
-
-    candidates := downlo.FilterUpdateCandidates(deploys, latest)
-    for _, c := range candidates {
-      downlo.Fetch(c, workspace)
-    }
     if debug {
+      fmt.Println("latestProjects")
+      fmt.Println(latestProjects)
+    }
+
+    candidates := updates.FilterUpdateCandidates(deployedReleases, latestProjects)
+    if debug {
+      fmt.Println("candidates")
       fmt.Println(candidates)
     }
 
-    // downloads := downlo.FetchUpdates(candidates)
+    for _, c := range candidates {
+      updates.Fetch(c, workspace)
+    }
+
+    // TODO: Add message/notify
 }

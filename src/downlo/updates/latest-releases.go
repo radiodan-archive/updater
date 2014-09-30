@@ -49,10 +49,11 @@ func parseJsonToProjects(data interface{}) (projects []Project) {
     current.Refs = map[string]downlo.Release{}
 
     for refName, ref := range refs {
-      log.Println(refName, ref)
       r := ref.(map[string]interface{})
+
       release := downlo.Release{}
-      release.Name    = refName
+      release.Project = projectName
+      release.Ref     = refName
       release.Source  = r["file"].(string)
       release.Hash    = r["sha1"].(string)
       release.Commit  = r["commit"].(string)
