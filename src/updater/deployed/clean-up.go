@@ -4,10 +4,10 @@ import(
   "log"
   "path/filepath"
   "os/exec"
-  "downlo"
+  "updater"
 )
 
-func CleanUp(release downlo.Release, workspace string) (bool) {
+func CleanUp(release updater.Release, workspace string) (bool) {
   var err error
 
   absolutePath, _ := filepath.Abs(workspace)

@@ -5,10 +5,10 @@ import (
   "encoding/json"
   "path/filepath"
   "io/ioutil"
-  "downlo"
+  "updater"
 )
 
-func Deployed(path string) (releases []downlo.Release) {
+func Deployed(path string) (releases []updater.Release) {
 
   dirs := ScanDirs(path)
 
@@ -20,7 +20,7 @@ func Deployed(path string) (releases []downlo.Release) {
   return
 }
 
-func ReleaseInfoForFilepath(dir string) (release downlo.Release) {
+func ReleaseInfoForFilepath(dir string) (release updater.Release) {
 
   var data map[string]interface{}
 

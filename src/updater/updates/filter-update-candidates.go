@@ -2,13 +2,13 @@ package updates
 
 import (
   "log"
-  "downlo"
+  "updater"
 )
 
-func FilterUpdateCandidates(deployed []downlo.Release, latest []Project) (candidates []downlo.Release) {
+func FilterUpdateCandidates(deployed []updater.Release, latest []Project) (candidates []updater.Release) {
   for _, d := range deployed {
     if isCandidate, release := NeedsUpdate(d, latest); isCandidate {
-      r := downlo.Release{}
+      r := updater.Release{}
 
       // Take most info from release
       r.Project = release.Project
@@ -29,7 +29,7 @@ func FilterUpdateCandidates(deployed []downlo.Release, latest []Project) (candid
   return
 }
 
-func NeedsUpdate(deployed downlo.Release, latest []Project) (isCandidate bool, candidate downlo.Release) {
+func NeedsUpdate(deployed updater.Release, latest []Project) (isCandidate bool, candidate updater.Release) {
   log.Printf("Checking '%s#%s'...\n", deployed.Project, deployed.Ref)
 
   isCandidate = false

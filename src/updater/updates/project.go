@@ -1,8 +1,8 @@
 package updates
 
-import "downlo"
+import "updater"
 
 type Project struct {
   Name string
-  Refs map[string]downlo.Release
+  Refs map[string]updater.Release
 }

@@ -5,7 +5,7 @@ import (
   "io/ioutil"
   "net/http"
   "encoding/json"
-  "downlo"
+  "updater"
 )
 
 func LatestReleasesByProject() (projects []Project) {
@@ -46,12 +46,12 @@ func parseJsonToProjects(data interface{}) (projects []Project) {
     current := Project{}
     current.Name = projectName
 
-    current.Refs = map[string]downlo.Release{}
+    current.Refs = map[string]updater.Release{}
 
     for refName, ref := range refs {
       r := ref.(map[string]interface{})
 
-      release := downlo.Release{}
+      release := updater.Release{}
       release.Project = projectName
       release.Ref     = refName
       release.Source  = r["file"].(string)

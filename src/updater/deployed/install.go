@@ -6,10 +6,10 @@ import (
   "os/exec"
   "time"
   "strconv"
-  "downlo"
+  "updater"
 )
 
-func InstallUpdate(update downlo.Release, workspace string) (bool){
+func InstallUpdate(update updater.Release, workspace string) (bool){
   absolutePath, _ := filepath.Abs(update.Target)
 
   timestamp := strconv.FormatInt( time.Now().Unix(), 10 )

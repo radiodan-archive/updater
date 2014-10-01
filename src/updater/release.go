@@ -1,4 +1,4 @@
-package downlo
+package updater
 
 type Release struct {
   Project string

@@ -5,10 +5,10 @@ import (
   "path/filepath"
   "io/ioutil"
   "encoding/json"
-  "downlo"
+  "updater"
 )
 
-func PendingUpdates(workspace string) (candidates []downlo.Release) {
+func PendingUpdates(workspace string) (candidates []updater.Release) {
   dirs := scanDirForManifest(workspace)
 
   candidates = loadManifests(dirs)
@@ -37,7 +37,7 @@ func scanDirForManifest(path string) (manifests []string) {
   return
 }
 
-func loadManifests(paths []string) (candidates []downlo.Release) {
+func loadManifests(paths []string) (candidates []updater.Release) {
   for _, p := range paths {
     candidates = append(candidates, loadManifest(p))
   }
@@ -45,7 +45,7 @@ func loadManifests(paths []string) (candidates []downlo.Release) {
   return
 }
 
-func loadManifest(path string) (candidate downlo.Release) {
+func loadManifest(path string) (candidate updater.Release) {
   contents, err := ioutil.ReadFile(path)
 
   if err != nil {

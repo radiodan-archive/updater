@@ -6,10 +6,10 @@ import(
   "io"
   "crypto/sha1"
   "fmt"
-  "downlo"
+  "updater"
 )
 
-func IsValidRelease(release downlo.Release) (isValid bool) {
+func IsValidRelease(release updater.Release) (isValid bool) {
   isValid = false
 
   path := release.Source

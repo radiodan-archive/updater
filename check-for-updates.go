@@ -3,15 +3,15 @@ package main
 import (
   "flag"
   "fmt"
-  "downlo/updates"
-  "downlo/deployed"
+  "updater/updates"
+  "updater/deployed"
 )
 
 
 func main() {
     var target, workspace string
 
-    debug := true
+    debug := false
 
     flag.StringVar(&target, "target", "", "The directory to search for")
     flag.StringVar(&workspace, "workspace", "", "Where to download updates to")

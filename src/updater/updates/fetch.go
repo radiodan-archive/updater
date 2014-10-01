@@ -7,10 +7,10 @@ import (
   "io/ioutil"
   "net/http"
   "strings"
-  "downlo"
+  "updater"
 )
 
-func Fetch(release downlo.Release, destinationPath string) () {
+func Fetch(release updater.Release, destinationPath string) () {
   absolutePath, _ := filepath.Abs(destinationPath)
   filename := filename(release)
   downloadPath := filepath.Join(absolutePath, "downloads", filename)
@@ -29,7 +29,7 @@ func Fetch(release downlo.Release, destinationPath string) () {
   log.Println(release)
 }
 
-func filename(r downlo.Release) string {
+func filename(r updater.Release) string {
   return strings.Replace(r.Project, "/", "-", -1) + "-" + r.Ref
 }
 
@@ -46,7 +46,7 @@ func downloadFile(url string, path string) {
   ioutil.WriteFile(path, body, 0777)
 }
 
-func writeManifest(path string, release downlo.Release) {
+func writeManifest(path string, release updater.Release) {
   data, err := json.MarshalIndent(release, "", "  ")
 
   if err != nil {

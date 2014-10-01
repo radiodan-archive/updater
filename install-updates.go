@@ -3,7 +3,7 @@ package main
 import (
   "flag"
   "log"
-  "downlo/deployed"
+  "updater/deployed"
 )
 
 func main() {
