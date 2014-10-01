@@ -19,6 +19,7 @@ func IsValidRelease(release downlo.Release) (isValid bool) {
 
   if err != nil {
     log.Printf("Error reading file: %s \n", path)
+    return
   }
 
   hash := sha1.New()

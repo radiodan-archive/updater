@@ -23,7 +23,8 @@ func scanDirForManifest(path string) (manifests []string) {
 
   matches, err := ioutil.ReadDir(dirpath)
   if err != nil {
-    log.Printf("Error reading path")
+    log.Printf("Error reading path '%s'", dirpath)
+    log.Println(err)
   }
 
   for _, f := range matches {

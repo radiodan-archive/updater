@@ -13,7 +13,7 @@ import (
 func Fetch(release downlo.Release, destinationPath string) () {
   absolutePath, _ := filepath.Abs(destinationPath)
   filename := filename(release)
-  downloadPath := filepath.Join(absolutePath, "binaries", filename)
+  downloadPath := filepath.Join(absolutePath, "downloads", filename)
   manifestPath := filepath.Join(absolutePath, "manifests", filename + ".json")
 
   log.Printf("Download url '%s'\n", release.Source)

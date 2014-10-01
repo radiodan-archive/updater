@@ -25,6 +25,10 @@ func main() {
     pending := deployed.PendingUpdates(workspace)
     if debug { log.Println(pending) }
 
+    if len(pending) == 0 {
+      log.Printf("No pending updates\n")
+    }
+
     for _, release := range pending {
       log.Printf("Found update '%s'", release.Project)
       if deployed.IsValidRelease(release) {

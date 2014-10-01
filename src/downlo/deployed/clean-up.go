@@ -12,7 +12,7 @@ func CleanUp(release downlo.Release, workspace string) (bool) {
 
   absolutePath, _ := filepath.Abs(workspace)
   filename := release.Name
-  downloadPath := filepath.Join(absolutePath, "binaries", filename)
+  downloadPath := filepath.Join(absolutePath, "downloads", filename)
   manifestPath := filepath.Join(absolutePath, "manifests", filename + ".json")
 
   err = exec.Command("rm", "-r", downloadPath).Run()

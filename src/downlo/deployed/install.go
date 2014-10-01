@@ -2,50 +2,60 @@ package deployed
 
 import (
   "log"
-  "io/ioutil"
   "path/filepath"
   "os/exec"
+  "time"
+  "strconv"
   "downlo"
 )
 
 func InstallUpdate(update downlo.Release, workspace string) (bool){
-  absolutePath, _ := filepath.Abs(workspace)
-  backupPath := filepath.Join(absolutePath, "previous", update.Name)
+  absolutePath, _ := filepath.Abs(update.Target)
 
-  // create temp dir
-  tempDir, err := ioutil.TempDir("", update.Name)
-  if err != nil {
-    log.Printf("Error creating temp dir for update '%s'", update.Project)
-  }
-
-  log.Printf("Temp Dir %s\n",  tempDir)
+  timestamp := strconv.FormatInt( time.Now().Unix(), 10 )
+  releasePath := filepath.Join(absolutePath, "releases", timestamp)
+  currentPath := filepath.Join(absolutePath, "current")
 
   // untar archive
-  err = exec.Command("tar", "-C", tempDir, "-xzf", update.Source).Run()
+  output, err := exec.Command("mkdir", "-p", releasePath).CombinedOutput()
   if err != nil {
-    log.Printf("Error unarchiving update '%s'\n", update.Project)
+    log.Printf("Error creating release dir '%s'", releasePath)
+    return false
+  }
+  log.Printf("Creating release dir '%s'", releasePath)
+
+  log.Printf("Unarchive update '%s' -> '%s'\n", releasePath, update.Source)
+  output, err = exec.Command("tar", "-C", releasePath, "-xzf", update.Source).CombinedOutput()
+  if err != nil {
+    log.Printf("Error unarchiving update '%s' -> '%s' \n", releasePath, update.Source)
     log.Println(err)
+    log.Println(string(output))
+
+    // Attempt to delete the deployed app
+    exec.Command("rm", "-r", releasePath).Run()
     return false
   }
 
-  // mv old file
-  err = exec.Command("mv", "-f", update.Target, backupPath).Run()
+  // Remove old symlink
+  output, err = exec.Command("rm", currentPath).CombinedOutput()
   if err != nil {
-    log.Printf("Error moving current app '%s' -> '%s'\n", update.Target, backupPath)
+    log.Printf("Error removing current link '%s'\n", currentPath)
     log.Println(err)
+    log.Println(output)
+
     return false
   }
 
-  // mv new into place
-  err = exec.Command("mv", "-f", tempDir, update.Target).Run()
+  // symlink new into place
+  log.Printf("Symlink '%s %s'\n", releasePath, currentPath)
+  output, err = exec.Command("ln", "-s", "-f", releasePath, currentPath).CombinedOutput()
   if err != nil {
-    log.Printf("Error moving updated app into place '%s' -> '%s'\n", tempDir, update.Target)
+    log.Printf("Error moving updated app into place '%s' -> '%s'\n", releasePath, currentPath)
     log.Println(err)
-
-    exec.Command("mv", backupPath, update.Target).Run()
 
     return false
   }
+  log.Println(output)
 
   // signal success
   return true

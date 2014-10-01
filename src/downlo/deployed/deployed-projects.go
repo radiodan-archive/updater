@@ -24,11 +24,12 @@ func ReleaseInfoForFilepath(dir string) (release downlo.Release) {
 
   var data map[string]interface{}
 
-  path := filepath.Join(dir, ".deploy")
+  path := filepath.Join(dir, "current", ".deploy")
 
   contents, err := ioutil.ReadFile(path)
   if err != nil {
     log.Printf("Error reading file: %s \n", path)
+    return
   }
 
   parseError := json.Unmarshal(contents, &data)
@@ -36,6 +37,7 @@ func ReleaseInfoForFilepath(dir string) (release downlo.Release) {
   if parseError != nil {
     log.Printf("Error reading deploy: %s \n", path)
     log.Println(parseError)
+    return
   }
 
   release.Project = data["name"].(string)
