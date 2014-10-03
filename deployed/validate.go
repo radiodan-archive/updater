@@ -6,10 +6,10 @@ import(
   "io"
   "crypto/sha1"
   "fmt"
-  "updater"
+  "github.com/radiodan/updater/model"
 )
 
-func IsValidRelease(release updater.Release) (isValid bool) {
+func IsValidRelease(release model.Release) (isValid bool) {
   isValid = false
 
   path := release.Source

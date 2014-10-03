@@ -4,10 +4,10 @@ import(
   "log"
   "path/filepath"
   "os/exec"
-  "updater"
+  "github.com/radiodan/updater/model"
 )
 
-func CleanUp(release updater.Release, workspace string) (bool) {
+func CleanUp(release model.Release, workspace string) (bool) {
   var err error
 
   absolutePath, _ := filepath.Abs(workspace)

@@ -5,10 +5,10 @@ import (
   "encoding/json"
   "path/filepath"
   "io/ioutil"
-  "updater"
+  "github.com/radiodan/updater/model"
 )
 
-func Deployed(path string) (releases []updater.Release) {
+func Deployed(path string) (releases []model.Release) {
 
   dirs := ScanDirs(path)
 
@@ -20,7 +20,7 @@ func Deployed(path string) (releases []updater.Release) {
   return
 }
 
-func ReleaseInfoForFilepath(dir string) (release updater.Release) {
+func ReleaseInfoForFilepath(dir string) (release model.Release) {
 
   var data map[string]interface{}
 

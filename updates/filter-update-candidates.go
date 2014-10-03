@@ -2,13 +2,13 @@ package updates
 
 import (
   "log"
-  "updater"
+  "github.com/radiodan/updater/model"
 )
 
-func FilterUpdateCandidates(deployed []updater.Release, latest []Project) (candidates []updater.Release) {
+func FilterUpdateCandidates(deployed []model.Release, latest []Project) (candidates []model.Release) {
   for _, d := range deployed {
     if isCandidate, release := NeedsUpdate(d, latest); isCandidate {
-      r := updater.Release{}
+      r := model.Release{}
 
       // Take most info from release
       r.Project = release.Project
@@ -29,7 +29,7 @@ func FilterUpdateCandidates(deployed []updater.Release, latest []Project) (candi
   return
 }
 
-func NeedsUpdate(deployed updater.Release, latest []Project) (isCandidate bool, candidate updater.Release) {
+func NeedsUpdate(deployed model.Release, latest []Project) (isCandidate bool, candidate model.Release) {
   log.Printf("Checking '%s#%s'...\n", deployed.Project, deployed.Ref)
 
   isCandidate = false

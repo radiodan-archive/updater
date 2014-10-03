@@ -5,10 +5,10 @@ import (
   "path/filepath"
   "io/ioutil"
   "encoding/json"
-  "updater"
+  "github.com/radiodan/updater/model"
 )
 
-func PendingUpdates(workspace string) (candidates []updater.Release) {
+func PendingUpdates(workspace string) (candidates []model.Release) {
   dirs := scanDirForManifest(workspace)
 
   candidates = loadManifests(dirs)
@@ -37,7 +37,7 @@ func scanDirForManifest(path string) (manifests []string) {
   return
 }
 
-func loadManifests(paths []string) (candidates []updater.Release) {
+func loadManifests(paths []string) (candidates []model.Release) {
   for _, p := range paths {
     candidates = append(candidates, loadManifest(p))
   }
@@ -45,7 +45,7 @@ func loadManifests(paths []string) (candidates []updater.Release) {
   return
 }
 
-func loadManifest(path string) (candidate updater.Release) {
+func loadManifest(path string) (candidate model.Release) {
   contents, err := ioutil.ReadFile(path)
 
   if err != nil {

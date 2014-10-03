@@ -1,4 +1,4 @@
-package updater
+package model
 
 type Release struct {
   Project string

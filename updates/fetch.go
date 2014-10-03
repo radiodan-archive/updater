@@ -7,10 +7,10 @@ import (
   "io/ioutil"
   "net/http"
   "strings"
-  "updater"
+  "github.com/radiodan/updater/model"
 )
 
-func Fetch(release updater.Release, destinationPath string) () {
+func Fetch(release model.Release, destinationPath string) () {
   absolutePath, _ := filepath.Abs(destinationPath)
   filename := filename(release)
   downloadPath := filepath.Join(absolutePath, "downloads", filename)
@@ -29,7 +29,7 @@ func Fetch(release updater.Release, destinationPath string) () {
   log.Println(release)
 }
 
-func filename(r updater.Release) string {
+func filename(r model.Release) string {
   return strings.Replace(r.Project, "/", "-", -1) + "-" + r.Ref
 }
 
@@ -46,7 +46,7 @@ func downloadFile(url string, path string) {
   ioutil.WriteFile(path, body, 0777)
 }
 
-func writeManifest(path string, release updater.Release) {
+func writeManifest(path string, release model.Release) {
   data, err := json.MarshalIndent(release, "", "  ")
 
   if err != nil {

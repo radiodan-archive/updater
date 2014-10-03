@@ -3,8 +3,8 @@ package main
 import (
   "flag"
   "fmt"
-  "updater/updates"
-  "updater/deployed"
+  "github.com/radiodan/updater/updates"
+  "github.com/radiodan/updater/deployed"
 )
 
 

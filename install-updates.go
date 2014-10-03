@@ -3,7 +3,7 @@ package main
 import (
   "flag"
   "log"
-  "updater/deployed"
+  "github.com/radiodan/updater/deployed"
 )
 
 func main() {
