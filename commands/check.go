@@ -1,33 +1,15 @@
-package main
+package commands
 
 import (
-  "flag"
   "fmt"
   "github.com/radiodan/updater/updates"
   "github.com/radiodan/updater/deployed"
 )
 
 
-func main() {
-    var target, workspace string
+func Check(workspace string, target string) {
 
     debug := false
-
-    flag.StringVar(&target, "target", "", "The directory to search for")
-    flag.StringVar(&workspace, "workspace", "", "Where to download updates to")
-    flag.Parse()
-
-    if target == "" {
-      fmt.Println("Missing parameter 'target'")
-      flag.PrintDefaults()
-      return
-    }
-
-    if workspace == "" {
-      fmt.Println("Missing parameter 'workspace'")
-      flag.PrintDefaults()
-      return
-    }
 
     fmt.Printf("Scanning %s\n", target)
 

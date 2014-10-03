@@ -1,24 +1,13 @@
-package main
+package commands
 
 import (
-  "flag"
   "log"
   "github.com/radiodan/updater/deployed"
 )
 
-func main() {
-    var workspace string
+func Install(workspace, target string) {
 
     debug := false
-
-    flag.StringVar(&workspace, "workspace", "", "Where to look for downloaded updates")
-    flag.Parse()
-
-    if workspace == "" {
-      log.Println("Missing parameter 'workspace'")
-      flag.PrintDefaults()
-      return
-    }
 
     log.Printf("Scanning '%s' for updates to install\n", workspace)
 
