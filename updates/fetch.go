@@ -6,15 +6,13 @@ import (
   "encoding/json"
   "io/ioutil"
   "net/http"
-  "strings"
   "github.com/radiodan/updater/model"
+  "github.com/radiodan/updater/deployed"
 )
 
 func Fetch(release model.Release, destinationPath string) () {
-  absolutePath, _ := filepath.Abs(destinationPath)
-  filename := filename(release)
-  downloadPath := filepath.Join(absolutePath, "downloads", filename)
-  manifestPath := filepath.Join(absolutePath, "manifests", filename + ".json")
+
+  downloadPath, manifestPath := filepaths(destinationPath, release)
 
   log.Printf("Download url '%s'\n", release.Source)
   log.Printf("Download to '%s'", downloadPath)
@@ -23,14 +21,35 @@ func Fetch(release model.Release, destinationPath string) () {
   downloadFile(release.Source, downloadPath)
 
   release.Source = downloadPath
-  release.Name   = filename
   writeManifest(manifestPath, release)
 
   log.Println(release)
 }
 
-func filename(r model.Release) string {
-  return strings.Replace(r.Project, "/", "-", -1) + "-" + r.Ref
+func Fetched(release model.Release, pendingReleases []model.Release, destinationPath string) (fetched bool) {
+  fetched = false
+
+  for _, pending := range pendingReleases {
+    if pending.Name() == release.Name() {
+      if pending.Commit == release.Commit {
+        if deployed.IsValidRelease(pending) {
+          fetched = true
+        }
+      }
+    }
+  }
+
+  return
+}
+
+func filepaths(destinationPath string, release model.Release) (downloadPath, manifestPath string) {
+  absolutePath, _ := filepath.Abs(destinationPath)
+  name := release.Name()
+
+  downloadPath = filepath.Join(absolutePath, "downloads", name)
+  manifestPath = filepath.Join(absolutePath, "manifests", name + ".json")
+
+  return
 }
 
 func downloadFile(url string, path string) {

@@ -11,7 +11,7 @@ func CleanUp(release model.Release, workspace string) (bool) {
   var err error
 
   absolutePath, _ := filepath.Abs(workspace)
-  filename := release.Name
+  filename := release.Name()
   downloadPath := filepath.Join(absolutePath, "downloads", filename)
   manifestPath := filepath.Join(absolutePath, "manifests", filename + ".json")
 

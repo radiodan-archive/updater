@@ -36,8 +36,18 @@ func Check(workspace string, target string) {
       fmt.Println(candidates)
     }
 
+    pending := deployed.PendingUpdates(workspace)
+    if debug {
+      fmt.Println("pending")
+      fmt.Println(pending)
+    }
+
     for _, c := range candidates {
-      updates.Fetch(c, workspace)
+      if !updates.Fetched(c, pending, workspace){
+        updates.Fetch(c, workspace)
+      } else {
+        fmt.Printf("%s already downloaded\n", c.Name())
+      }
     }
 
     // TODO: Add message/notify
