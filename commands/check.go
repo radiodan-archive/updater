@@ -2,14 +2,18 @@ package commands
 
 import (
   "fmt"
+  "path/filepath"
   "github.com/radiodan/updater/updates"
   "github.com/radiodan/updater/deployed"
+  "github.com/radiodan/updater/model"
 )
 
 
 func Check(workspace string, target string) {
 
     debug := false
+
+    status := model.StatusFromPath(filepath.Join(workspace, "status.json"))
 
     fmt.Printf("Scanning %s\n", target)
 
@@ -49,6 +53,8 @@ func Check(workspace string, target string) {
         fmt.Printf("%s already downloaded\n", c.Name())
       }
     }
+
+    status.UpdateLastChecked()
 
     // TODO: Add message/notify
 }
