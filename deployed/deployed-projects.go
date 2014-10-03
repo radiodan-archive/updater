@@ -13,14 +13,17 @@ func Deployed(path string) (releases []model.Release) {
   dirs := ScanDirs(path)
 
   for _, d := range dirs {
-    release := ReleaseInfoForFilepath(d)
-    releases = append(releases, release)
+    release, ok := ReleaseInfoForFilepath(d)
+    if ok {
+      releases = append(releases, release)
+    }
   }
 
   return
 }
 
-func ReleaseInfoForFilepath(dir string) (release model.Release) {
+func ReleaseInfoForFilepath(dir string) (release model.Release, ok bool) {
+  ok = false
 
   var data map[string]interface{}
 
@@ -28,7 +31,7 @@ func ReleaseInfoForFilepath(dir string) (release model.Release) {
 
   contents, err := ioutil.ReadFile(path)
   if err != nil {
-    log.Printf("Error reading file: %s \n", path)
+    log.Printf("No .deploy file at '%s' \n", path)
     return
   }
 
@@ -44,6 +47,8 @@ func ReleaseInfoForFilepath(dir string) (release model.Release) {
   release.Ref     = data["ref"].(string)
   release.Source  = dir
   release.Commit  = data["commit"].(string)
+
+  ok = true
 
   return
 }

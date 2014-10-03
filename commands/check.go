@@ -19,6 +19,11 @@ func Check(workspace string, target string) {
       fmt.Println(deployedReleases)
     }
 
+    if len(deployedReleases) == 0 {
+      fmt.Printf("No deployed releases found in '%s'\n", target)
+      return
+    }
+
     latestProjects := updates.LatestReleasesByProject()
     if debug {
       fmt.Println("latestProjects")
