@@ -2,3 +2,5 @@ dummy
 workspace
 TODO
 bin
+Godeps/*
+!Godeps/Godeps.json
