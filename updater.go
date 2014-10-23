@@ -3,7 +3,11 @@ package main
 import (
   "flag"
   "fmt"
+  "os"
+  "os/signal"
+  "path/filepath"
   "github.com/radiodan/updater/commands"
+  "github.com/radiodan/updater/model"
 )
 
 func main() {
@@ -44,6 +48,25 @@ func main() {
   if target == "" || workspace == "" {
     fs.PrintDefaults()
     return
+  }
+
+  // Check or create lock file
+  lock, err := model.CreateLockAtPath(filepath.Join(workspace))
+  if err != nil {
+    fmt.Println("App is already running")
+    fmt.Println(err)
+    return
+  } else {
+    c := make(chan os.Signal, 1)
+    signal.Notify(c, os.Interrupt)
+    go func() {
+      for _ = range c {
+        fmt.Println("Release lock")
+        lock.Release()
+        os.Exit(0)
+      }
+    }()
+    defer lock.Release()
   }
 
   // Check command
