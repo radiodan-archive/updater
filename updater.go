@@ -51,7 +51,16 @@ func main() {
 	}
 
 	// Check or create lock file
-	lock, err := model.CreateLockAtPath(filepath.Join(workspace))
+	// Create in /tmp if available, otherwise it goes in the workspace
+	lockPath := "/tmp"
+
+	_, err := os.Stat(lockPath)
+
+	if err != nil {
+		lockPath = filepath.Join(workspace)
+	}
+
+	lock, err := model.CreateLockAtPath(lockPath)
 	if err != nil {
 		fmt.Println("App is already running")
 		fmt.Println(err)
