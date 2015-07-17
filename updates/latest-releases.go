@@ -3,6 +3,7 @@ package updates
 import (
 	"encoding/json"
 	"github.com/radiodan/updater/model"
+	"github.com/radiodan/updater/utils"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,7 +12,7 @@ import (
 func LatestReleasesByProject() (projects []Project) {
 	deployUrl := "http://deploy.radiodan.net"
 
-	body, err := fetch(deployUrl)
+	body, err := fetch(deployUrl, utils.MachineHardware())
 
 	if err != nil {
 		log.Println("[!] Cannot connect to", deployUrl)
@@ -30,8 +31,12 @@ func LatestReleasesByProject() (projects []Project) {
 }
 
 // Fetch body from a URL
-func fetch(url string) (body []byte, err error) {
-	resp, err := http.Get(url)
+func fetch(url string, machineHardware string) (body []byte, err error) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	req.Header.Add("X-Machine-Hardware-Name", machineHardware)
+
+	resp, err := client.Do(req)
 
 	if err != nil {
 		log.Printf("HTTP Request Error")
