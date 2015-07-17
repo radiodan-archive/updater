@@ -3,6 +3,7 @@ package deployed
 import (
 	"github.com/radiodan/updater/model"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
@@ -34,6 +35,32 @@ func InstallUpdate(update model.Release, workspace string) bool {
 		// Attempt to delete the deployed app
 		exec.Command("rm", "-r", releasePath).Run()
 		return false
+	}
+
+	// Detect node app and install dependencies if not
+	// provided in archive
+	log.Println("Checking for package.json")
+	packageJsonPath := filepath.Join(releasePath, "package.json")
+	if _, err := os.Stat(packageJsonPath); err == nil {
+		log.Println("package.json exists")
+
+		nodeModulesPath := filepath.Join(releasePath, "node_modules")
+		log.Println("Checking for node_modules")
+		if _, err := os.Stat(nodeModulesPath); os.IsNotExist(err) {
+			_ = os.Chdir(releasePath)
+			log.Println("Run npm install")
+			output, err = exec.Command("npm", "install").CombinedOutput()
+			if err != nil {
+				log.Printf("Error running npm install '%s'\n", releasePath)
+				log.Println(err)
+				log.Println(string(output[:]))
+				return false
+			} else {
+				log.Println(string(output[:]))
+			}
+		}
+	} else {
+		log.Println("package.json does not exist")
 	}
 
 	// Remove old symlink
